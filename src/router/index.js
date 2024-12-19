@@ -1,10 +1,10 @@
 import { createRouter, createWebHistory } from "vue-router";
 import HomeView from "../views/HomeView.vue";
-import CategoriaView from "../views/CategoriaView.vue";
+import CardapioView from "../views/CardapioView.vue";
+import CardapioCardView from "../views/CardapioCardView.vue";
 import LoginView from "../views/LoginView.vue";
 import LogoutView from "../views/LogoutView.vue";
 import UsuarioView from "../views/UsuarioView.vue";
-import LivroView from "../views/LivroView.vue";
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -15,14 +15,14 @@ const router = createRouter({
       component: HomeView,
     },
     {
-      path: "/categorias",
-      name: "categorias",
-      component: CategoriaView,
+      path: "/cardapios",
+      name: "cardapios",
+      component: CardapioView,
     },
     {
-      path: "/livros",
-      name: "livros",
-      component: LivroView,
+      path: "/cardapioCard",
+      name: "cardapioCard",
+      component: CardapioCardView,
     },
     {
       path: "/login",

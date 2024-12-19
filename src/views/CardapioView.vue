@@ -1,55 +1,71 @@
 <script setup>
 import { ref, reactive, onMounted } from "vue";
-import CategoriasApi from "@/api/categorias";
-const categoriasApi = new CategoriasApi();
+import CardapioApi from "@/api/cardapio";
 
-const defaultCategoria = { id: null, descricao: "" };
-const categorias = ref([]);
-const categoria = reactive({ ...defaultCategoria });
+const cardapioApi = new CardapioApi();
+
+const defaultCardapio = {
+  id: null,
+  dia: "",
+  proteina: "",
+  opcao_vegetariana: "",
+  acompanhamento: "",
+  saladas: "",
+  sobremesa: ""
+};
+
+const cardapios = ref([]);
+const cardapio = reactive({ ...defaultCardapio });
 
 onMounted(async () => {
-  categorias.value = await categoriasApi.buscarTodasAsCategorias();
+  cardapios.value = await cardapioApi.buscarTodosOsCardapios();
 });
 
 function limpar() {
-  Object.assign(categoria, { ...defaultCategoria });
+  Object.assign(cardapio, { ...defaultCardapio });
 }
 
 async function salvar() {
-  if (categoria.id) {
-    await categoriasApi.atualizarCategoria(categoria);
+  if (cardapio.id) {
+    await cardapioApi.atualizarCardapio(cardapio);
   } else {
-    await categoriasApi.adicionarCategoria(categoria);
+    await cardapioApi.adicionarCardapio(cardapio);
   }
-  categorias.value = await categoriasApi.buscarTodasAsCategorias();
+  cardapios.value = await cardapioApi.buscarTodosOsCardapios();
   limpar();
 }
 
-function editar(categoria_para_editar) {
-  Object.assign(categoria, categoria_para_editar);
+function editar(cardapioParaEditar) {
+  Object.assign(cardapio, cardapioParaEditar);
 }
 
 async function excluir(id) {
-  await categoriasApi.excluirCategoria(id);
-  categorias.value = await categoriasApi.buscarTodasAsCategorias();
+  await cardapioApi.excluirCardapio(id);
+  cardapios.value = await cardapioApi.buscarTodosOsCardapios();
   limpar();
 }
 </script>
 
 <template>
   <div class="container">
-    <h1>Categorias</h1>
+    <h1>Cardápio Semanal</h1>
     <div class="form">
-      <input type="text" v-model="categoria.descricao" placeholder="Descrição" />
+      <input type="text" v-model="cardapio.dia" placeholder="Dia (e.g., SEG)" />
+      <input type="text" v-model="cardapio.proteina" placeholder="Proteína" />
+      <input type="text" v-model="cardapio.opcao_vegetariana" placeholder="Opção Vegetariana" />
+      <input type="text" v-model="cardapio.acompanhamento" placeholder="Acompanhamento" />
+      <input type="text" v-model="cardapio.saladas" placeholder="Saladas" />
+      <input type="text" v-model="cardapio.sobremesa" placeholder="Sobremesa" />
       <button @click="salvar">Salvar</button>
       <button @click="limpar">Limpar</button>
     </div>
-    <ul class="categoria-list">
-      <li v-for="categoria in categorias" :key="categoria.id">
-        <span @click="editar(categoria)">
-          ({{ categoria.id }}) - {{ categoria.descricao }}
+    <ul class="cardapio-list">
+      <li v-for="item in cardapios" :key="item.id">
+        <span @click="editar(item)">
+          {{ item.dia }} - {{ item.proteina }} | {{ item.opcao_vegetariana }} | {{ item.acompanhamento }} |
+          {{ item.saladas }} | {{ item.sobremesa }}
         </span>
-        <button @click="excluir(categoria.id)">Excluir</button>
+        <button @click="excluir(item.id)">Excluir</button>
       </li>
     </ul>
   </div>
@@ -117,7 +133,7 @@ button:hover {
   background-color: #000;
 }
 
-.categoria-list {
+.cardapio-list {
   list-style: none;
   padding: 0;
   margin: 0;

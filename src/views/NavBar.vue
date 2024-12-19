@@ -1,6 +1,7 @@
 <script setup>
-import { ref, computed } from 'vue';
-import { useAuthStore } from '@/stores/auth'; // Importa a store de autenticação
+import { ref, computed } from "vue";
+import { useAuthStore } from "@/stores/auth"; // Importa a store de autenticação
+import router from "../router";
 
 const authStore = useAuthStore();
 
@@ -22,8 +23,8 @@ const toggleDropdown = () => {
     <nav>
       <div class="nav-left">
         <router-link :to="{ name: 'home' }" class="logo">Livraria</router-link>
-        <router-link :to="{ name: 'categorias' }">Categorias</router-link>
-        <router-link :to="{ name: 'livros' }">Livros</router-link>
+        <router-link :to="{ name: 'cardapios' }">Cardápios</router-link>
+        <router-link :to="{ name: 'cardapioCard' }">Cardápio Card</router-link>
       </div>
 
       <div class="nav-right" v-if="isLoggedIn">
@@ -46,8 +47,11 @@ const toggleDropdown = () => {
           />
 
           <div v-if="showDropdown" class="dropdown-menu">
-            <p><strong>{{ user.name }}</strong></p>
-            <p class="email">{{ user.email }}</p> <!-- Adiciona classe email -->
+            <p>
+              <strong>{{ user.name }}</strong>
+            </p>
+            <p class="email">{{ user.email }}</p>
+            <!-- Adiciona classe email -->
             <router-link to="/logout" class="dropdown-item">Logout</router-link>
           </div>
         </div>
